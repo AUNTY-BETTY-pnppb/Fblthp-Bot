@@ -14,7 +14,7 @@ async def on_message(message):
         cards = re.findall("\[\[([^\[\]]*)\]\]", message.content)
         if len(cards) > 0 :
             for i in cards:
-                await message.channel.send("i")
+                await message.channel.send(i)
         
 my_token = os.environ['Fblthp']
 client.run(my_token)
