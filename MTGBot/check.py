@@ -16,31 +16,44 @@ for i in data["cards"]:
     if i['legalities']['commander'] == 'legal':
         # check if the image is not double-faced
         if 'image_uris' in i.keys():
-            cardDictionary[i['name']] = {'image' : [i['image_uris']['large']], 'euro' : i['prices']['eur']}
+            cardDictionary[i['name']] = {'image' : [i['image_uris']['large']]}
         # else for the double-faced
         else:
             cardDictionary[i['name']] = {'image' : [i['card_faces'][0]['image_uris']['large'],
-                                         i['card_faces'][1]['image_uris']['large']], 'euro' : i['prices']['eur']}
+                                         i['card_faces'][1]['image_uris']['large']]}
 
 # Closing file
 f.close()
 
-# search engine for cards
-def search():
-    # take input
-    print('Read to take input: ')
-    userInput = input()
+faves = ['Colossal Dreadmaw', 'Gishath', 'Ghave', 'Tayam', 'Chatterfang']
 
+# search engine for cards
+def search(input):
+    extras = {}
+    input = input.replace(",", "")
     # make sure it is valid length
-    if len(userInput) > 2:
+    if len(input) > 1:
         # sift through the dictionary
         for card in cardDictionary.keys():
-            # compare the card with the input
-            if any(word in userInput.lower().split() for word in card.lower().split()):
-                print(card, end=" ")
-                print(cardDictionary[card])
+            # remove the ',' in card titles
+            cardCheck = card.replace(",", "")
+            if input in cardDictionary.keys():
+                print(input, end=' ')
+                print(cardDictionary[input])
+                return
+            if any(word in input.lower().split() for word in cardCheck.lower().split()):
+                if card not in extras.keys():
+                    extras[card] = cardDictionary[card]  
+        # if no single found then print the list
+        for card in extras.keys():
+            if len(extras) == 1:
+                print(card, end=' ')
+                print(extras[card])
+                return
+            print(card)
+
     # else print as invalid
     else:
-        print('Invalid input length of ' + str(len(userInput)) + ' characters')
+        print('Invalid input length of ' + str(len(input)) + ' characters')
 
-search()
+search('Dreadmaw')
